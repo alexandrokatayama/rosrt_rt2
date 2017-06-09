@@ -1,4 +1,4 @@
-# Overview
+# Package Summary
 
 rosrt_rt2 is a packege of ROS node to manipulate RT.works' robot assist walker RT.2.
 This explains how to use it.
