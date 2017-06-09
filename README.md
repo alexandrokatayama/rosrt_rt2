@@ -44,8 +44,9 @@ Then build them in the workspace.
 
 ## Power up the RT.2
 
-## On the PC
 Push power button on the control box.
+
+## On the PC
 
 ### Start roscore
 	$ roscore
