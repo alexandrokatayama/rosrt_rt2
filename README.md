@@ -3,6 +3,8 @@
 rosrt_rt2 is a packege of ROS node to manipulate RT.works' robot assist walker RT.2.
 This explains how to use it.
 
+**NOTE:RT.works does not support using RT.2 with ROS. This may break the product and it is not covered by warranty.**
+
 # Preparation
 
 ## Hardware
