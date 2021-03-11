@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include "version.h"
 
 #define MAX_TWIST_CNT (16)
 static geometry_msgs::Twist last_twist_buf[MAX_TWIST_CNT];
@@ -247,29 +248,31 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 				last_twist_cnt_r = 0;
 			}
 
-#define REAR_TREAD_RT2	(0.502)		/*!< 駆動輪のトレッド[m] */
-			speed_left = speed - rotate * REAR_TREAD_RT2 / 2.0;		/* m/s */
-			speed_right = speed + rotate * REAR_TREAD_RT2 / 2.0;		/* m/s */
-
-#define SPEED_COEFF_RT2 (95.8904)	/*!< 内部変数への変換係数(MOTOR_SLOWNESS * (MOTOR_POLES/2) / REAR_TIRE_RADIUS_M) */
-			speed_left *= SPEED_COEFF_RT2;
-			speed_right *= SPEED_COEFF_RT2;
-
-			if (rotate > 0.0)
-			{
-				fspeed = (int)speed_right;
-				fradiu = (int)(1000.0 * speed_left / speed_right) - 1000;
-			}
-			else
-			{
-				fspeed = (int)speed_left;
-				fradiu = 1000 - (int)(1000.0 * speed_right / speed_left);
-			}
-
 			if((rotate == 0.0)&&(speed == 0.0))
 			{
 				fspeed = 0;
 				fradiu = 0;
+			}
+			else
+			{
+#define REAR_TREAD_RT2	(0.502)		/*!< 駆動輪のトレッド[m] */
+				speed_left = speed - rotate * REAR_TREAD_RT2 / 2.0;		/* m/s */
+				speed_right = speed + rotate * REAR_TREAD_RT2 / 2.0;		/* m/s */
+
+#define SPEED_COEFF_RT2 (95.8904)	/*!< 内部変数への変換係数(MOTOR_SLOWNESS * (MOTOR_POLES/2) / REAR_TIRE_RADIUS_M) */
+				speed_left *= SPEED_COEFF_RT2;
+				speed_right *= SPEED_COEFF_RT2;
+
+				if (rotate > 0.0)
+				{
+					fspeed = (int)speed_right;
+					fradiu = (int)(1000.0 * speed_left / speed_right) - 1000;
+				}
+				else
+				{
+					fspeed = (int)speed_left;
+					fradiu = 1000 - (int)(1000.0 * speed_right / speed_left);
+				}
 			}
 
 			if (fspeed > 2000)
@@ -526,6 +529,8 @@ private:
 
 int main(int argc, char **argv)
 {
+	printf("rosrt_rt2 : version %s\n", VERSION_NUMBER);
+
 	last_twist_cnt_w = 0;
 	last_twist_cnt_r = 0;
 
