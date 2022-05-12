@@ -263,6 +263,8 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 				speed_left *= SPEED_COEFF_RT2;
 				speed_right *= SPEED_COEFF_RT2;
 
+				if (speed > 0.0)
+				{
 				if (rotate > 0.0)
 				{
 					fspeed = (int)speed_right;
@@ -272,6 +274,20 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 				{
 					fspeed = (int)speed_left;
 					fradiu = 1000 - (int)(1000.0 * speed_right / speed_left);
+				}
+				}
+				else
+				{
+				if (rotate < 0.0)
+				{
+					fspeed = (int)speed_right;
+					fradiu = (int)(1000.0 * speed_left / speed_right) - 1000;
+				}
+				else
+				{
+					fspeed = (int)speed_left;
+					fradiu = 1000 - (int)(1000.0 * speed_right / speed_left);
+				}
 				}
 			}
 
