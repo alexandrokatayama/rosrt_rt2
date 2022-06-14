@@ -210,7 +210,7 @@ static void *subTask(void *stock)
 	fd = open(receive_stock->port_, O_RDWR | O_NONBLOCK);
 if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 
-	/* UART���M */
+	/* UART送信 */
 	strcpy(uart_send_buf, "setmode dbg rtw65371\r\n");
 	write3(fd, uart_send_buf, strlen(uart_send_buf));
 	strcpy(uart_send_buf, "fdrive1\r\n");
@@ -255,11 +255,11 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 			}
 			else
 			{
-#define REAR_TREAD_RT2	(0.502)		/*!< �쓮�ւ̃g���b�h[m] */
+#define REAR_TREAD_RT2	(0.502)		/*!< 駆動輪のトレッド[m] */
 				speed_left = speed - rotate * REAR_TREAD_RT2 / 2.0;		/* m/s */
 				speed_right = speed + rotate * REAR_TREAD_RT2 / 2.0;		/* m/s */
 
-#define SPEED_COEFF_RT2 (95.8904)	/*!< �����ϐ��ւ̕ϊ��W��(MOTOR_SLOWNESS * (MOTOR_POLES/2) / REAR_TIRE_RADIUS_M) */
+#define SPEED_COEFF_RT2 (95.8904)	/*!< 内部変数への変換係数(MOTOR_SLOWNESS * (MOTOR_POLES/2) / REAR_TIRE_RADIUS_M) */
 				speed_left *= SPEED_COEFF_RT2;
 				speed_right *= SPEED_COEFF_RT2;
 
@@ -315,7 +315,7 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 			fspeed += 2048;
 			fradiu += 2048;
 
-			/* UART���M */
+			/* UART送信 */
 			sprintf(uart_send_buf, "fspeed%c%c%c%c\r\n",
 					((fspeed / 1000) % 10) + '0',
 					((fspeed / 100) % 10) + '0',
@@ -333,7 +333,7 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 		}
 
 		uart_tmp_len = read(fd, uart_tmp_buf, UART_BUF_LEN);
-		if (uart_tmp_len >= 1)	/* UART��M */
+		if (uart_tmp_len >= 1)	/* UART受信 */
 		{
 			for(i=0;i<uart_tmp_len;i++)
 			{
@@ -394,9 +394,9 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 						  z = z;
 						 */
 						pos = 2;
-						msg.accel.angular.y = (double)get_int(uart_receive_buf, &pos) / -10000.0;	/* 0.0001rad/s -> rad/s */
-						msg.accel.angular.x = (double)get_int(uart_receive_buf, &pos) / 10000.0;	/* 0.0001rad/s -> rad/s */
-						msg.accel.angular.z = (double)get_int(uart_receive_buf, &pos) / 10000.0;	/* 0.0001rad/s -> rad/s */
+						msg.velocity.angular.y = (double)get_int(uart_receive_buf, &pos) / -10000.0;	/* 0.0001rad/s -> rad/s */
+						msg.velocity.angular.x = (double)get_int(uart_receive_buf, &pos) / 10000.0;	/* 0.0001rad/s -> rad/s */
+						msg.velocity.angular.z = (double)get_int(uart_receive_buf, &pos) / 10000.0;	/* 0.0001rad/s -> rad/s */
 					}
 					//printf("%g %g %g %g %g %g %g %g\n", msg.velocity.linear.x, msg.velocity.angular.z, msg.accel.linear.x, msg.accel.linear.y, msg.accel.linear.z, msg.accel.angular.x, msg.accel.angular.y, msg.accel.angular.z);
 
@@ -415,7 +415,7 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 
 			if (wait_5sec_cnt == 0)
 			{
-				/* UART���M */
+				/* UART送信 */
 				strcpy(uart_send_buf, "setmode dbg rtw65371\r\n");
 				write3(fd, uart_send_buf, strlen(uart_send_buf));
 				strcpy(uart_send_buf, "fdrive1\r\n");
@@ -445,7 +445,7 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 
 			if (wait_1sec_cnt == 0)
 			{
-				/* UART���M */
+				/* UART送信 */
 				strcpy(uart_send_buf, "fspeed2048\r\n");
 				write3(fd, uart_send_buf, strlen(uart_send_buf));
 			}
@@ -459,7 +459,6 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 				/* publish RtSensor structure */
 
 				msg.velocity.linear.x = (latest_speed_left + latest_speed_right) / 2.0;
-				msg.velocity.angular.z = (latest_speed_right - latest_speed_left) / REAR_TREAD_RT2;
 
 				/* Some variable may not be updated, but don't care */
 				receive_stock->pub_.publish(msg);
