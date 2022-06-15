@@ -13,7 +13,7 @@ Open the control box and find connector J1102.
 PIN #1 and PIN #2 are for serial communication(pulled up to 3.3V), and PIN #3 is GND.
 
 Get USB to TTL Serial Converter Cable
-(For example : http://akizukidenshi.com/catalog/g/gM-05840 )
+(For example : https://akizukidenshi.com/catalog/g/gM-05840 )
 and connect those 3 pins to the cable.
 
 **NOTE:communication lines are pulled up to 3.3v. Choose proper converter cable.**
@@ -25,6 +25,8 @@ PIN #1 of J1102(RXD pulled up to 3.3v) --- PIN #4(ORANGE) of Converter
 PIN #2 of J1102(TXD pulled up to 3.3v) --- PIN #5(YELLOW) of Converter
 
 PIN #3 of J1102(GND) --- PIN #1(BLACK) of Converder
+
+**NOTE:Once communication line is disconnected during ROS' operation, the RT.2 keeps running. There is no automatic brake system. Please be careful.
 
 ## Software
 
@@ -68,3 +70,14 @@ $ rostopic echo /rosrt_rt2
 $ rosrun ros_start sample.py /mobile_base/commands/velocity:=/cmd_vel
 ```
 Then RT.2 moves forward, backward, and turn left and right.
+
+# License
+
+Copyright (c) 2022 RT.Works co., ltd.
+This software is released under the MIT License, see LICENSE.txt
+
+# Disclaimer
+
+**RT.Works co., ltd. is not responsible for any damage caused by RT.2 using with ROS or any other external device.
+There is a risk of damage to RT.2, or the colliding with surroundings or people, resulting in an unexpected serious accident.
+Please use this software with sufficient attention to safety at your own risk.
