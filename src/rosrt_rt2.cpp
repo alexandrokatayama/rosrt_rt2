@@ -281,6 +281,7 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 					fradiu = 1000 - (int)(1000.0 * speed_right / speed_left);
 				}
 				}
+				wait_5sec_cnt = WAIT_5SEC_CNT_MAX;
 			}
 
 			if (fspeed > 2000)
