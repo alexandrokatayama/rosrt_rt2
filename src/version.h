@@ -11,6 +11,6 @@
 #ifndef _INCLUDE_VERSION_H_
 #define _INCLUDE_VERSION_H_
 
-#define VERSION_NUMBER "1.8.4"
+#define VERSION_NUMBER "1.8.5"
 
 #endif /* _INCLUDE_VERSION_H_ */
