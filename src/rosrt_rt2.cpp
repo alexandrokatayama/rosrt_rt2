@@ -213,6 +213,14 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 	/* UART送信 */
 	strcpy(uart_send_buf, "setmode dbg rtw65371\r\n");
 	write3(fd, uart_send_buf, strlen(uart_send_buf));
+	strcpy(uart_send_buf, "fdrive1\r\n");
+	write3(fd, uart_send_buf, strlen(uart_send_buf));
+	strcpy(uart_send_buf, "fturn1\r\n");
+	write3(fd, uart_send_buf, strlen(uart_send_buf));
+	strcpy(uart_send_buf, "fspeed2048\r\n");
+	write3(fd, uart_send_buf, strlen(uart_send_buf));
+	strcpy(uart_send_buf, "fradiu2048\r\n");
+	write3(fd, uart_send_buf, strlen(uart_send_buf));
 	strcpy(uart_send_buf, "mtlr2\r\n");
 	write3(fd, uart_send_buf, strlen(uart_send_buf));
 	strcpy(uart_send_buf, "mtrr2\r\n");
@@ -223,7 +231,7 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 	write3(fd, uart_send_buf, strlen(uart_send_buf));
 
 	wait_100msec_cnt = WAIT_100MSEC_CNT_MAX;
-	wait_1sec_cnt = WAIT_1SEC_CNT_MAX;
+	wait_1sec_cnt = 0;
 	wait_5sec_cnt = WAIT_5SEC_CNT_MAX;
 
 	for(;task_end == 0;)
@@ -281,7 +289,6 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 					fradiu = 1000 - (int)(1000.0 * speed_right / speed_left);
 				}
 				}
-				wait_5sec_cnt = WAIT_5SEC_CNT_MAX;
 			}
 
 			if (fspeed > 2000)
@@ -411,10 +418,6 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 				/* UART送信 */
 				strcpy(uart_send_buf, "setmode dbg rtw65371\r\n");
 				write3(fd, uart_send_buf, strlen(uart_send_buf));
-				strcpy(uart_send_buf, "fdrive1\r\n");
-				write3(fd, uart_send_buf, strlen(uart_send_buf));
-				strcpy(uart_send_buf, "fturn1\r\n");
-				write3(fd, uart_send_buf, strlen(uart_send_buf));
 				strcpy(uart_send_buf, "mtlr2\r\n");
 				write3(fd, uart_send_buf, strlen(uart_send_buf));
 				strcpy(uart_send_buf, "mtrr2\r\n");
@@ -443,7 +446,6 @@ if (fd < 0) fprintf(stderr, "open %s error\n", receive_stock->port_);
 				write3(fd, uart_send_buf, strlen(uart_send_buf));
 				strcpy(uart_send_buf, "fradiu2048\r\n");
 				write3(fd, uart_send_buf, strlen(uart_send_buf));
-				wait_1sec_cnt = WAIT_1SEC_CNT_MAX;
 			}
 		}
 
